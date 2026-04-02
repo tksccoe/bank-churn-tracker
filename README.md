@@ -1,20 +1,86 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# Bank Churn Tracker
 
-# Run and deploy your AI Studio app
+Track bank account bonuses, requirements, and fee-free conditions in one place.
 
-This contains everything you need to run your app locally.
+## Tech Stack
 
-View your app in AI Studio: https://ai.studio/apps/674c4c64-9886-460a-b3e5-7df9e4424976
+- **Framework:** Next.js 16 (App Router)
+- **Database:** MongoDB (Mongoose)
+- **Auth:** NextAuth.js with Google OAuth
+- **Styling:** Tailwind CSS v4
+- **Animations:** Motion (Framer Motion)
 
-## Run Locally
+## Getting Started
 
-**Prerequisites:**  Node.js
+### Prerequisites
 
+- Node.js 18+
+- A MongoDB Atlas cluster (or local MongoDB)
+- A Google OAuth 2.0 Client ID & Secret ([create one here](https://console.cloud.google.com/apis/credentials))
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+### Setup
+
+1. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+2. **Create `.env.local`** (copy from `.env.example`)
+   ```bash
+   cp .env.example .env.local
+   ```
+   Fill in:
+   ```env
+   MONGODB_URI=mongodb+srv://<user>:<pass>@<cluster>.mongodb.net/bank-churn-tracker
+   NEXTAUTH_SECRET=<run: openssl rand -base64 32>
+   NEXTAUTH_URL=http://localhost:3000
+   GOOGLE_CLIENT_ID=<your-client-id>.apps.googleusercontent.com
+   GOOGLE_CLIENT_SECRET=<your-client-secret>
+   ```
+
+3. **Configure Google OAuth** in [Google Cloud Console](https://console.cloud.google.com/apis/credentials):
+   - Authorized JavaScript origins: `http://localhost:3000`
+   - Authorized redirect URIs: `http://localhost:3000/api/auth/callback/google`
+
+4. **Run the dev server**
+   ```bash
+   npm run dev
+   ```
+   Open [http://localhost:3000](http://localhost:3000).
+
+## Project Structure
+
+```
+src/
+├── app/
+│   ├── layout.tsx              # Root layout + font + metadata
+│   ├── page.tsx                # Landing page
+│   ├── dashboard/page.tsx      # Dashboard (protected)
+│   ├── privacy/page.tsx
+│   ├── terms/page.tsx
+│   └── api/
+│       ├── auth/[...nextauth]/ # NextAuth handler
+│       └── accounts/           # REST API (GET, POST, PATCH, DELETE)
+├── components/
+│   ├── Header.tsx
+│   ├── Footer.tsx
+│   ├── AccountCard.tsx
+│   ├── AccountForm.tsx
+│   └── Providers.tsx
+├── lib/
+│   ├── auth.ts                 # NextAuth config
+│   ├── mongodb.ts              # Mongoose + MongoClient connections
+│   ├── models/Account.ts
+│   └── utils.ts
+└── types/
+    └── index.ts
+```
+
+## Scripts
+
+| Command | Description |
+|---|---|
+| `npm run dev` | Start dev server on port 3000 |
+| `npm run build` | Production build |
+| `npm start` | Start production server |
+| `npm run lint` | Run Next.js linter |

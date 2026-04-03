@@ -3,6 +3,7 @@
 import { useSession, signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import { motion } from 'motion/react';
 import {
   Banknote,
@@ -77,6 +78,37 @@ export default function LandingPage() {
                 Learn More
               </a>
             </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Product Screenshot */}
+      <section className="relative -mt-16 pb-8 overflow-hidden">
+        <div className="max-w-5xl mx-auto px-4">
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="rounded-2xl overflow-hidden shadow-2xl border border-slate-200 ring-1 ring-slate-900/5"
+          >
+            {/* Browser chrome */}
+            <div className="bg-slate-100 border-b border-slate-200 px-4 py-3 flex items-center gap-2">
+              <span className="w-3 h-3 rounded-full bg-red-400" />
+              <span className="w-3 h-3 rounded-full bg-yellow-400" />
+              <span className="w-3 h-3 rounded-full bg-green-400" />
+              <div className="ml-3 flex-1 bg-white rounded-md px-3 py-1 text-xs text-slate-400 font-mono max-w-sm">
+                bankchurntracker.com/dashboard
+              </div>
+            </div>
+            <Image
+              src="/dashboard1.png"
+              alt="Bank Churn Tracker dashboard showing account bonuses and progress"
+              width={1019}
+              height={1190}
+              className="w-full block"
+              quality={100}
+              priority
+            />
           </motion.div>
         </div>
       </section>

@@ -175,7 +175,7 @@ export default function LandingPage() {
         <div className="max-w-5xl mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12 text-center">
             <div>
-              <p className="text-4xl font-bold mb-2">$500+</p>
+              <p className="text-4xl font-bold mb-2">$1000+</p>
               <p className="text-blue-100 font-medium">Average Annual Bonus</p>
             </div>
             <div>

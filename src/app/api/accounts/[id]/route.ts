@@ -36,7 +36,7 @@ export async function PATCH(
   const account = await Account.findOneAndUpdate(
     { _id: id, userId: session.user.id },
     { $set: body },
-    { new: true }
+    { returnDocument: 'after' }
   );
 
   if (!account) {

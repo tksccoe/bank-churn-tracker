@@ -12,6 +12,7 @@ export interface Account {
   bonusRequirements?: string;
   bonusAmountReceived?: number;
   feeFreeRequirement?: string;
+  notes?: string;
   monthlyFeeFreeMet?: Record<string, boolean>;
   status: AccountStatus;
   userId: string;

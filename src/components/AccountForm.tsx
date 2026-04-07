@@ -23,6 +23,7 @@ export default function AccountForm({ initialData, onClose, onSaved }: Props) {
     bonusRequirements: initialData?.bonusRequirements || '',
     bonusAmountReceived: initialData?.bonusAmountReceived ?? '',
     feeFreeRequirement: initialData?.feeFreeRequirement || '',
+    notes: initialData?.notes || '',
     status: (initialData?.status || 'Pending') as AccountStatus,
   });
 
@@ -245,6 +246,21 @@ export default function AccountForm({ initialData, onClose, onSaved }: Props) {
                 }
                 className={`${field} resize-none`}
                 placeholder="e.g. Maintain $1500 daily balance"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-semibold text-slate-700 mb-1">Notes</label>
+              <textarea
+                rows={4}
+                value={formData.notes}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    notes: e.target.value,
+                  })
+                }
+                className={`${field} resize-none`}
+                placeholder="e.g. Transferred $500 on 4/1, waiting for bonus..."
               />
             </div>
           </div>

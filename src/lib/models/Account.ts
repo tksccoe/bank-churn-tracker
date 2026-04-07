@@ -12,6 +12,7 @@ const accountSchema = new mongoose.Schema(
     bonusRequirements: String,
     bonusAmountReceived: Number,
     feeFreeRequirement: String,
+    notes: String,
     monthlyFeeFreeMet: { type: Map, of: Boolean, default: {} },
     status: {
       type: String,
@@ -23,8 +24,7 @@ const accountSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const Account =
-  (mongoose.models.Account as mongoose.Model<typeof accountSchema>) ||
-  mongoose.model('Account', accountSchema);
+delete (mongoose.models as any).Account;
+const Account = mongoose.model('Account', accountSchema);
 
 export default Account;

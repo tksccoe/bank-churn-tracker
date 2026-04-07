@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { motion } from 'motion/react';
-import { format, parseISO, isAfter, addMonths, startOfMonth } from 'date-fns';
+import { format, parseISO, isValid, isAfter, addMonths, startOfMonth } from 'date-fns';
 import {
   Banknote,
   CheckCircle2,
@@ -156,7 +156,7 @@ export default function AccountCard({
               <div key={item.label}>
                 <p className="text-[10px] uppercase tracking-widest text-slate-400 font-semibold mb-1">{item.label}</p>
                 <p className="text-sm font-medium text-slate-700">
-                  {item.value ? format(parseISO(item.value), 'MMM d, yyyy') : '—'}
+                  {item.value ? (() => { const d = parseISO(item.value); return isValid(d) ? format(d, 'MMM d, yyyy') : '—'; })() : '—'}
                 </p>
               </div>
             ))}
@@ -205,6 +205,13 @@ export default function AccountCard({
               {account.feeFreeRequirement && (
                 <p className="mt-2 text-xs text-slate-400 italic">{account.feeFreeRequirement}</p>
               )}
+            </div>
+          </div>
+
+          <div>
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-2">Notes</p>
+            <div className="bg-slate-50 rounded-xl p-3 text-sm text-slate-600 leading-relaxed min-h-[56px] whitespace-pre-wrap">
+              {account.notes || <span className="text-slate-400 italic">No notes yet</span>}
             </div>
           </div>
         </div>

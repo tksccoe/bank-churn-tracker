@@ -18,6 +18,10 @@ export async function connectDB(): Promise<void> {
   if (!g._mongoose!.promise) {
     g._mongoose!.promise = mongoose.connect(uri).then(() => {
       g._mongoose!.connected = true;
+    }).catch((err) => {
+      // Clear the cached rejection so the next request retries the connection
+      g._mongoose!.promise = null;
+      throw err;
     });
   }
   await g._mongoose!.promise;
@@ -40,7 +44,11 @@ function createClientPromise(): Promise<MongoClient> {
   }
   if (process.env.NODE_ENV === 'development') {
     if (!global._mongoClientPromise) {
-      global._mongoClientPromise = new MongoClient(uri).connect();
+      global._mongoClientPromise = new MongoClient(uri).connect().catch((err) => {
+        // Clear the cached rejection so the next request retries the connection
+        global._mongoClientPromise = undefined;
+        throw err;
+      });
     }
     return global._mongoClientPromise;
   }

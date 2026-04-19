@@ -28,6 +28,14 @@ export default function Footer() {
               </li>
               <li>
                 <Link
+                  href="/offers"
+                  className="hover:text-blue-600 transition-colors"
+                >
+                  Bank Bonuses
+                </Link>
+              </li>
+              <li>
+                <Link
                   href="/dashboard"
                   className="hover:text-blue-600 transition-colors"
                 >

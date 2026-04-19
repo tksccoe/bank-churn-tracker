@@ -1,3 +1,21 @@
+export interface Offer {
+  id: string;
+  title: string;
+  slug: string;
+  institutionName: string;
+  accountType: string;
+  bonusAmount: number;
+  requirements: string;
+  description: string;
+  referralUrl: string;
+  expirationDate?: string;
+  imageUrl?: string;
+  featured: boolean;
+  active: boolean;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
 export type AccountStatus = 'Pending' | 'Completed' | 'Closed' | 'Declined';
 
 export interface Account {

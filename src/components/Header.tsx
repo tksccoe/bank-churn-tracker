@@ -42,6 +42,18 @@ export default function Header({ actions }: HeaderProps) {
         <div className="flex items-center gap-1">
           {actions && <div className="mr-2">{actions}</div>}
 
+          <Link
+            href="/offers"
+            className={cn(
+              'text-sm font-semibold px-3 py-1.5 rounded-lg transition-colors',
+              pathname === '/offers' || pathname.startsWith('/offers/')
+                ? 'bg-blue-50 text-blue-600'
+                : 'text-slate-600 hover:text-blue-600 hover:bg-slate-50'
+            )}
+          >
+            Bank Bonuses
+          </Link>
+
           {session ? (
             <>
               <Link

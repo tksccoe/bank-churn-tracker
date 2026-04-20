@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import { Gift } from 'lucide-react';
 import { connectDB } from '@/lib/mongodb';
+
+export const dynamic = 'force-dynamic';
 import Offer from '@/lib/models/Offer';
 import OfferCard from '@/components/OfferCard';
 import Header from '@/components/Header';

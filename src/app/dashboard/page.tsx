@@ -34,7 +34,9 @@ export default function DashboardPage() {
   const [accounts, setAccounts] = useState<Account[]>([]);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingAccount, setEditingAccount] = useState<Account | null>(null);
-  const [hideInactive, setHideInactive] = useState(false);
+  const [visibleStatuses, setVisibleStatuses] = useState<Set<string>>(
+    new Set(['Pending', 'Active'])
+  );
 
   const fetchAccounts = useCallback(async () => {
     try {
@@ -62,9 +64,18 @@ export default function DashboardPage() {
       sum + (acc.status === 'Pending' ? acc.bonusAmount || 0 : 0),
     0
   );
-  const filteredAccounts = hideInactive
-    ? accounts.filter((a) => !['Closed', 'Declined'].includes(a.status))
-    : accounts;
+  const filteredAccounts = accounts.filter((a) =>
+    visibleStatuses.has(getEffectiveStatus(a))
+  );
+
+  const toggleStatus = (status: string) => {
+    setVisibleStatuses((prev) => {
+      const next = new Set(prev);
+      if (next.has(status)) next.delete(status);
+      else next.add(status);
+      return next;
+    });
+  };
 
   const addAccountButton = (
     <button
@@ -135,19 +146,22 @@ export default function DashboardPage() {
         <div className="space-y-6">
           <div className="flex items-center justify-between">
             <h2 className="text-xl font-bold text-slate-900">Your Accounts</h2>
-            <button
-              onClick={() => setHideInactive(!hideInactive)}
-              className={cn(
-                'text-xs font-bold px-3 py-1.5 rounded-lg border transition-all flex items-center gap-2',
-                hideInactive
-                  ? 'bg-blue-50 border-blue-200 text-blue-600'
-                  : 'bg-white border-slate-200 text-slate-500 hover:border-slate-300'
-              )}
-            >
-              {hideInactive
-                ? `Showing Active Only (${filteredAccounts.length})`
-                : `Showing All Accounts (${accounts.length})`}
-            </button>
+            <div className="flex items-center gap-3">
+              {['Pending', 'Active', 'Completed', 'Closed', 'Declined'].map((status) => (
+                <label
+                  key={status}
+                  className="flex items-center gap-1.5 text-xs font-medium text-slate-600 cursor-pointer select-none"
+                >
+                  <input
+                    type="checkbox"
+                    checked={visibleStatuses.has(status)}
+                    onChange={() => toggleStatus(status)}
+                    className="w-3.5 h-3.5 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
+                  />
+                  {status}
+                </label>
+              ))}
+            </div>
           </div>
 
           {accounts.length === 0 ? (
@@ -174,13 +188,13 @@ export default function DashboardPage() {
                 <CheckCircle2 className="w-8 h-8 text-slate-400" />
               </div>
               <h3 className="text-lg font-semibold text-slate-900 mb-1">
-                No active accounts
+                No matching accounts
               </h3>
               <p className="text-slate-500 mb-6">
-                All your accounts are currently Closed or Declined.
+                No accounts match the selected filters.
               </p>
               <button
-                onClick={() => setHideInactive(false)}
+                onClick={() => setVisibleStatuses(new Set(['Pending', 'Active', 'Completed', 'Closed', 'Declined']))}
                 className="text-blue-600 font-bold hover:underline"
               >
                 Show All Accounts

@@ -141,6 +141,18 @@ export default function AccountCard({
           </div>
         </div>
 
+        {/* Mobile bonus amounts */}
+        <div className="flex sm:hidden items-center gap-4 mt-2 pl-[52px]">
+          <div>
+            <p className="text-[10px] uppercase tracking-widest text-slate-400 font-semibold">Target</p>
+            <p className="text-sm font-bold text-slate-800">${(account.bonusAmount || 0).toLocaleString()}</p>
+          </div>
+          <div>
+            <p className="text-[10px] uppercase tracking-widest text-slate-400 font-semibold">Received</p>
+            <p className="text-sm font-bold text-emerald-600">${(account.bonusAmountReceived || 0).toLocaleString()}</p>
+          </div>
+        </div>
+
         <BonusProgress received={account.bonusAmountReceived || 0} target={account.bonusAmount || 0} />
       </div>
 

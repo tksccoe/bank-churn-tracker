@@ -5,8 +5,7 @@ export interface Offer {
   institutionName: string;
   accountType: string;
   bonusAmount: number;
-  requirements: string;
-  description: string;
+  details: string;
   referralUrl: string;
   expirationDate?: string;
   imageUrl?: string;

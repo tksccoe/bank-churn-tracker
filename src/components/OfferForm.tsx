@@ -26,8 +26,7 @@ export default function OfferForm({ initialData, onClose, onSaved }: Props) {
     institutionName: initialData?.institutionName || '',
     accountType: initialData?.accountType || '',
     bonusAmount: initialData?.bonusAmount ?? '',
-    requirements: initialData?.requirements || '',
-    description: initialData?.description || '',
+    details: initialData?.details || '',
     referralUrl: initialData?.referralUrl || '',
     expirationDate: initialData?.expirationDate || '',
     imageUrl: initialData?.imageUrl || '',
@@ -221,32 +220,17 @@ export default function OfferForm({ initialData, onClose, onSaved }: Props) {
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-semibold text-slate-700 mb-1">
-                  Requirements *
+                  Details (Markdown) *
                 </label>
                 <textarea
                   required
-                  rows={3}
-                  value={formData.requirements}
+                  rows={10}
+                  value={formData.details}
                   onChange={(e) =>
-                    setFormData({ ...formData, requirements: e.target.value })
-                  }
-                  className={`${field} resize-none`}
-                  placeholder="e.g. Set up direct deposit of $500+ within 90 days"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-semibold text-slate-700 mb-1">
-                  Description (Markdown) *
-                </label>
-                <textarea
-                  required
-                  rows={8}
-                  value={formData.description}
-                  onChange={(e) =>
-                    setFormData({ ...formData, description: e.target.value })
+                    setFormData({ ...formData, details: e.target.value })
                   }
                   className={`${field} resize-none font-mono text-sm`}
-                  placeholder="## How to Earn&#10;1. Open a new account&#10;2. Set up direct deposit&#10;&#10;## Fine Print&#10;- New customers only"
+                  placeholder="## Requirements&#10;- Set up direct deposit of $500+ within 90 days&#10;&#10;## How to Earn&#10;1. Open a new account&#10;2. Set up direct deposit&#10;&#10;## Fine Print&#10;- New customers only"
                 />
               </div>
               <div>

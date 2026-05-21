@@ -36,7 +36,7 @@ export async function generateMetadata({
   if (!doc) return { title: 'Offer Not Found' };
   return {
     title: `${doc.title} | Bank Churn Tracker`,
-    description: `${doc.institutionName} ${doc.accountType} — $${doc.bonusAmount} bonus. ${doc.requirements}`,
+    description: `${doc.institutionName} ${doc.accountType} — $${doc.bonusAmount} bonus.`,
   };
 }
 
@@ -124,20 +124,10 @@ export default async function OfferDetailPage({
               </div>
             </div>
 
-            {/* Requirements */}
-            <div className="p-6 md:p-8 border-b border-slate-100">
-              <h2 className="text-lg font-bold text-slate-900 mb-3">
-                Requirements
-              </h2>
-              <p className="text-slate-600 leading-relaxed whitespace-pre-line">
-                {offer.requirements}
-              </p>
-            </div>
-
-            {/* Description (Markdown) */}
+            {/* Details (Markdown) */}
             <div className="p-6 md:p-8 border-b border-slate-100">
               <div className="prose prose-slate prose-sm max-w-none prose-headings:font-bold prose-a:text-blue-600 prose-a:no-underline hover:prose-a:underline">
-                <ReactMarkdown>{offer.description}</ReactMarkdown>
+                <ReactMarkdown>{offer.details}</ReactMarkdown>
               </div>
             </div>
 

@@ -51,7 +51,7 @@ export default function OfferCard({ offer }: OfferCardProps) {
         </div>
 
         <p className="text-slate-500 text-sm mb-4 line-clamp-2">
-          {offer.requirements}
+          {offer.details}
         </p>
 
         <div className="flex items-center justify-between">

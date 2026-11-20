@@ -30,7 +30,6 @@ export async function connectDB(): Promise<void> {
 // ── Native MongoClient (for NextAuth MongoDBAdapter) ─────────────────────────
 
 declare global {
-  // eslint-disable-next-line no-var
   var _mongoClientPromise: Promise<MongoClient> | undefined;
 }
 

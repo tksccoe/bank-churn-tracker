@@ -26,14 +26,16 @@ export default function AdminOffersPage() {
 
   const isAdmin = session?.user?.isAdmin === true;
 
-  const fetchOffers = useCallback(async () => {
-    try {
-      const res = await fetch('/api/offers');
-      if (res.ok) setOffers(await res.json());
-    } catch (err) {
-      console.error('Failed to fetch offers:', err);
-    }
-  }, []);
+  const fetchOffers = useCallback(
+    () =>
+      fetch('/api/offers')
+        .then((res) => (res.ok ? res.json() : null))
+        .then((data: Offer[] | null) => {
+          if (data) setOffers(data);
+        })
+        .catch((err) => console.error('Failed to fetch offers:', err)),
+    []
+  );
 
   useEffect(() => {
     if (status === 'authenticated') fetchOffers();

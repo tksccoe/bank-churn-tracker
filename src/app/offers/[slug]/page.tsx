@@ -12,18 +12,9 @@ import {
 } from 'lucide-react';
 import { connectDB } from '@/lib/mongodb';
 import Offer from '@/lib/models/Offer';
+import { serializeOffer } from '@/lib/serialize';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-
-function serialize(doc: any) {
-  const obj = doc.toObject ? doc.toObject() : { ...doc };
-  return {
-    ...obj,
-    id: obj._id?.toString(),
-    _id: undefined,
-    __v: undefined,
-  };
-}
 
 export async function generateMetadata({
   params,
@@ -50,7 +41,7 @@ export default async function OfferDetailPage({
   const doc = await Offer.findOne({ slug, active: true });
   if (!doc) notFound();
 
-  const offer = serialize(doc);
+  const offer = serializeOffer(doc);
   const isExpired =
     offer.expirationDate && new Date(offer.expirationDate) < new Date();
 

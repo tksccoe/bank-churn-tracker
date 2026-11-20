@@ -17,7 +17,8 @@ const offerSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-delete (mongoose.models as any).Offer;
+// Drop any cached model so schema edits take effect on dev hot-reload
+delete mongoose.models.Offer;
 const Offer = mongoose.model('Offer', offerSchema);
 
 export default Offer;

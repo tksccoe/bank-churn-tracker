@@ -1,6 +1,6 @@
 'use client';
 
-import { useSession, signOut } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 import { useEffect, useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Plus, Banknote, Clock, CheckCircle2, DollarSign } from 'lucide-react';
@@ -30,7 +30,7 @@ export function getEffectiveStatus(account: Account): string {
 }
 
 export default function DashboardPage() {
-  const { data: session, status } = useSession();
+  const { status } = useSession();
   const [accounts, setAccounts] = useState<Account[]>([]);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingAccount, setEditingAccount] = useState<Account | null>(null);
@@ -38,18 +38,20 @@ export default function DashboardPage() {
     new Set(['Pending', 'Active'])
   );
 
-  const fetchAccounts = useCallback(async () => {
-    try {
-      const res = await fetch('/api/accounts');
-      if (res.ok) setAccounts(await res.json());
-    } catch (err) {
-      console.error('Failed to fetch accounts:', err);
-    }
-  }, []);
+  const fetchAccounts = useCallback(
+    () =>
+      fetch('/api/accounts')
+        .then((res) => (res.ok ? res.json() : null))
+        .then((data: Account[] | null) => {
+          if (data) setAccounts(data);
+        })
+        .catch((err) => console.error('Failed to fetch accounts:', err)),
+    []
+  );
 
+  // /dashboard is auth-guarded by src/proxy.ts, so there's no signed-out state to reset here
   useEffect(() => {
     if (status === 'authenticated') fetchAccounts();
-    if (status === 'unauthenticated') setAccounts([]);
   }, [status, fetchAccounts]);
 
   if (status === 'loading') return <LoadingScreen />;

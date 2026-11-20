@@ -38,7 +38,7 @@ export default function OfferForm({ initialData, onClose, onSaved }: Props) {
   const [error, setError] = useState<string | null>(null);
 
   const handleTitleChange = (value: string) => {
-    const updates: any = { title: value };
+    const updates: Partial<typeof formData> = { title: value };
     // Auto-generate slug from title only when creating
     if (!initialData) {
       updates.slug = slugify(value);

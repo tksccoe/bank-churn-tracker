@@ -4,6 +4,7 @@ import { connectDB } from '@/lib/mongodb';
 
 export const dynamic = 'force-dynamic';
 import Offer from '@/lib/models/Offer';
+import { serializeOffer } from '@/lib/serialize';
 import OfferCard from '@/components/OfferCard';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -14,16 +15,6 @@ export const metadata: Metadata = {
     'Browse the latest bank account bonus offers. Find checking, savings, and brokerage promotions with sign-up bonuses.',
 };
 
-function serialize(doc: any) {
-  const obj = doc.toObject ? doc.toObject() : { ...doc };
-  return {
-    ...obj,
-    id: obj._id?.toString(),
-    _id: undefined,
-    __v: undefined,
-  };
-}
-
 export default async function OffersPage() {
   await connectDB();
   const docs = await Offer.find({ active: true }).sort({
@@ -31,7 +22,7 @@ export default async function OffersPage() {
     bonusAmount: -1,
     createdAt: -1,
   });
-  const offers = docs.map(serialize);
+  const offers = docs.map(serializeOffer);
 
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col">
@@ -70,7 +61,7 @@ export default async function OffersPage() {
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {offers.map((offer: any) => (
+                {offers.map((offer) => (
                   <OfferCard key={offer.id} offer={offer} />
                 ))}
               </div>

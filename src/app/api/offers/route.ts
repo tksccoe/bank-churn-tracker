@@ -3,16 +3,7 @@ import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/lib/auth';
 import { connectDB } from '@/lib/mongodb';
 import Offer from '@/lib/models/Offer';
-
-function serialize(doc: any) {
-  const obj = doc.toObject ? doc.toObject() : { ...doc };
-  return {
-    ...obj,
-    id: obj._id?.toString(),
-    _id: undefined,
-    __v: undefined,
-  };
-}
+import { serializeOffer } from '@/lib/serialize';
 
 // Public: anyone can list active offers; admin sees all offers
 export async function GET() {
@@ -25,7 +16,7 @@ export async function GET() {
     featured: -1,
     createdAt: -1,
   });
-  return NextResponse.json(offers.map(serialize));
+  return NextResponse.json(offers.map(serializeOffer));
 }
 
 // Admin-only: create a new offer
@@ -39,5 +30,5 @@ export async function POST(req: Request) {
   await connectDB();
   const body = await req.json();
   const offer = await Offer.create(body);
-  return NextResponse.json(serialize(offer), { status: 201 });
+  return NextResponse.json(serializeOffer(offer), { status: 201 });
 }

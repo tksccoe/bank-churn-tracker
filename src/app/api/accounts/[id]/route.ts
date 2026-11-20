@@ -3,21 +3,7 @@ import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/lib/auth';
 import { connectDB } from '@/lib/mongodb';
 import Account from '@/lib/models/Account';
-
-function serialize(doc: any) {
-  const obj = doc.toObject ? doc.toObject() : { ...doc };
-  return {
-    ...obj,
-    id: obj._id?.toString(),
-    userId: obj.userId?.toString(),
-    monthlyFeeFreeMet:
-      obj.monthlyFeeFreeMet instanceof Map
-        ? Object.fromEntries(obj.monthlyFeeFreeMet)
-        : obj.monthlyFeeFreeMet ?? {},
-    _id: undefined,
-    __v: undefined,
-  };
-}
+import { serializeAccount } from '@/lib/serialize';
 
 export async function PATCH(
   req: Request,
@@ -42,7 +28,7 @@ export async function PATCH(
   if (!account) {
     return NextResponse.json({ error: 'Account not found' }, { status: 404 });
   }
-  return NextResponse.json(serialize(account));
+  return NextResponse.json(serializeAccount(account));
 }
 
 export async function DELETE(

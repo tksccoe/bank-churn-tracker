@@ -24,7 +24,8 @@ const accountSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-delete (mongoose.models as any).Account;
+// Drop any cached model so schema edits take effect on dev hot-reload
+delete mongoose.models.Account;
 const Account = mongoose.model('Account', accountSchema);
 
 export default Account;

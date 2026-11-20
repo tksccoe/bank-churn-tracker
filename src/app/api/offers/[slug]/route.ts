@@ -3,16 +3,7 @@ import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/lib/auth';
 import { connectDB } from '@/lib/mongodb';
 import Offer from '@/lib/models/Offer';
-
-function serialize(doc: any) {
-  const obj = doc.toObject ? doc.toObject() : { ...doc };
-  return {
-    ...obj,
-    id: obj._id?.toString(),
-    _id: undefined,
-    __v: undefined,
-  };
-}
+import { serializeOffer } from '@/lib/serialize';
 
 // Public: get a single offer by slug
 export async function GET(
@@ -25,7 +16,7 @@ export async function GET(
   if (!offer) {
     return NextResponse.json({ error: 'Offer not found' }, { status: 404 });
   }
-  return NextResponse.json(serialize(offer));
+  return NextResponse.json(serializeOffer(offer));
 }
 
 // Admin-only: update an offer
@@ -50,7 +41,7 @@ export async function PUT(
   if (!offer) {
     return NextResponse.json({ error: 'Offer not found' }, { status: 404 });
   }
-  return NextResponse.json(serialize(offer));
+  return NextResponse.json(serializeOffer(offer));
 }
 
 // Admin-only: delete an offer
